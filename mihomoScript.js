@@ -1,14 +1,3 @@
-/**
- * mihomo配置覆写脚本（全量版）
- * 作者：AIsouler
- * 源仓库：https://github.com/AIsouler/MyClash
- * 脚本链接：https://raw.githubusercontent.com/AIsouler/MyClash/main/Script/mihomoScript.js
- * 友情推荐，非常好用、省电且内存占用低的代理软件：https://github.com/appshubcc/Bettbox
- */
-
-// --- 静态配置区域 ---
-
-// 适配 Bettbox 自定义配置参数
 const Compatible_With_Bettbox = { ruleOptionsEnable: true };
 
 /**
@@ -115,37 +104,43 @@ const regionDefinitions = [
   {
     name: '香港',
     flag: '🇭🇰',
-    regex: /🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong/i,
+    regex:
+      /🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong/i,
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Hong_Kong.png',
   },
   {
     name: '日本',
     flag: '🇯🇵',
-    regex: /🇯🇵|日本|樱花|(?<![A-Za-z])JPN?(?![A-Za-z])|japan/i,
+    regex:
+      /🇯🇵|日本|樱花|(?<![A-Za-z])JPN?(?![A-Za-z])|japan/i,
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Japan.png',
   },
   {
     name: '美国',
     flag: '🇺🇸',
-    regex: /🇺🇸|美国|美|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states/i,
+    regex:
+      /🇺🇸|美国|美|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states/i,
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/United_States.png',
   },
   {
     name: '新加坡',
     flag: '🇸🇬',
-    regex: /🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore/i,
+    regex:
+      /🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore/i,
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Singapore.png',
   },
   {
     name: '韩国',
     flag: '🇰🇷',
-    regex: /🇰🇷|韩国|韓國|首尔|首爾|(?<![A-Za-z])(?:KR|KOR)(?![A-Za-z])|south\s*korea|korea|seoul/i,
+    regex:
+      /🇰🇷|韩国|韓國|首尔|首爾|(?<![A-Za-z])(?:KR|KOR)(?![A-Za-z])|south\s*korea|korea|seoul/i,
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Korea.png',
   },
   {
     name: '台湾省',
     flag: '🇹🇼',
-    regex: /🇹🇼|台湾|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan/i,
+    regex:
+      /🇹🇼|台湾|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan/i,
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Taiwan.png',
   },
 ];
@@ -156,7 +151,8 @@ const highRateRegionName = '高倍率节点';
 const rateRegionDefinitions = [
   {
     name: lowRateRegionName,
-    regex: /^(?!.*(?:剩|期|客户端|软件)).*(?:(?<!\d)0\.[0-5]|下载|低倍)/,
+    regex:
+      /^(?!.*(?:剩|期|客户端|软件)).*(?:(?<!\d)0\.[0-5]|下载|低倍)/,
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available_1.png',
   },
   {
@@ -167,7 +163,10 @@ const rateRegionDefinitions = [
   },
 ];
 
-const allRegionDefinitions = [...regionDefinitions, ...rateRegionDefinitions];
+const allRegionDefinitions = [
+  ...regionDefinitions,
+  ...rateRegionDefinitions,
+];
 
 const ruleProviderCommonDomain = {
   type: 'http',
@@ -202,42 +201,48 @@ const baseRuleProviders = {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games@cn.mrs',
     path: './ruleset/category-games@cn.mrs',
-    'path-in-bundle': 'geo/geosite/category-games@cn.mrs',
+    'path-in-bundle':
+      'geo/geosite/category-games@cn.mrs',
   },
 
   epicgames: {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/epicgames.mrs',
     path: './ruleset/epicgames.mrs',
-    'path-in-bundle': 'geo/geosite/epicgames.mrs',
+    'path-in-bundle':
+      'geo/geosite/epicgames.mrs',
   },
 
   nvidia_cn: {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/nvidia@cn.mrs',
     path: './ruleset/nvidia_cn.mrs',
-    'path-in-bundle': 'geo/geosite/nvidia@cn.mrs',
+    'path-in-bundle':
+      'geo/geosite/nvidia@cn.mrs',
   },
 
   apple_cn: {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple@cn.mrs',
     path: './ruleset/apple_cn.mrs',
-    'path-in-bundle': 'geo/geosite/apple@cn.mrs',
+    'path-in-bundle':
+      'geo/geosite/apple@cn.mrs',
   },
 
   microsoft_cn: {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft@cn.mrs',
     path: './ruleset/microsoft_cn.mrs',
-    'path-in-bundle': 'geo/geosite/microsoft@cn.mrs',
+    'path-in-bundle':
+      'geo/geosite/microsoft@cn.mrs',
   },
 
   'geolocation-cn': {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-cn.mrs',
     path: './ruleset/geolocation-cn.mrs',
-    'path-in-bundle': 'geo/geosite/geolocation-cn.mrs',
+    'path-in-bundle':
+      'geo/geosite/geolocation-cn.mrs',
   },
 
   cn_ip: {
@@ -258,21 +263,25 @@ const baseRuleProviders = {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/wwqgtxx/clash-rules@release/fakeip-filter.mrs',
     path: './ruleset/fakeip-filter.mrs',
-    'path-in-bundle': 'geo/geosite/private.mrs',
+    'path-in-bundle':
+      'geo/geosite/private.mrs',
   },
 
   cn_additional: {
     ...ruleProviderCommonDomain,
     url: 'https://static-file-global.353355.xyz/rules/cn-additional-list.mrs',
-    path: './ruleset/cn-additional-list.mrs',
-    'path-in-bundle': 'geo/geosite/cn.mrs',
+    path:
+      './ruleset/cn-additional-list.mrs',
+    'path-in-bundle':
+      'geo/geosite/cn.mrs',
   },
 
   cn: {
     ...ruleProviderCommonDomain,
     url: 'https://fastly.jsdelivr.net/gh/wwqgtxx/clash-rules@release/direct.mrs',
     path: './ruleset/cn.mrs',
-    'path-in-bundle': 'geo/geosite/cn.mrs',
+    'path-in-bundle':
+      'geo/geosite/cn.mrs',
   },
 };
 
@@ -341,11 +350,14 @@ const serviceConfigs = [
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.mrs',
         path: './ruleset/ai.mrs',
-        'path-in-bundle': 'geo/geosite/category-ai-!cn.mrs',
+        'path-in-bundle':
+          'geo/geosite/category-ai-!cn.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ChatGPT.png',
-    rules: ['RULE-SET,ai,AI'],
+    rules: [
+      'RULE-SET,ai,AI',
+    ],
   },
 
   {
@@ -356,71 +368,91 @@ const serviceConfigs = [
       youtube: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.mrs',
-        path: './ruleset/youtube.mrs',
-        'path-in-bundle': 'geo/geosite/youtube.mrs',
+        path:
+          './ruleset/youtube.mrs',
+        'path-in-bundle':
+          'geo/geosite/youtube.mrs',
       },
 
       instagram: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/instagram.mrs',
-        path: './ruleset/instagram.mrs',
-        'path-in-bundle': 'geo/geosite/instagram.mrs',
+        path:
+          './ruleset/instagram.mrs',
+        'path-in-bundle':
+          'geo/geosite/instagram.mrs',
       },
 
       netflix: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/netflix.mrs',
-        path: './ruleset/netflix.mrs',
-        'path-in-bundle': 'geo/geosite/netflix.mrs',
+        path:
+          './ruleset/netflix.mrs',
+        'path-in-bundle':
+          'geo/geosite/netflix.mrs',
       },
 
       netflix_ip: {
         ...ruleProviderCommonIpcidr,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/netflix.mrs',
-        path: './ruleset/netflix_ip.mrs',
-        'path-in-bundle': 'geo/geoip/netflix.mrs',
+        path:
+          './ruleset/netflix_ip.mrs',
+        'path-in-bundle':
+          'geo/geoip/netflix.mrs',
       },
 
       hbo: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/hbo.mrs',
-        path: './ruleset/hbo.mrs',
-        'path-in-bundle': 'geo/geosite/hbo.mrs',
+        path:
+          './ruleset/hbo.mrs',
+        'path-in-bundle':
+          'geo/geosite/hbo.mrs',
       },
 
       twitch: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitch.mrs',
-        path: './ruleset/twitch.mrs',
-        'path-in-bundle': 'geo/geosite/twitch.mrs',
+        path:
+          './ruleset/twitch.mrs',
+        'path-in-bundle':
+          'geo/geosite/twitch.mrs',
       },
 
       disney: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/disney.mrs',
-        path: './ruleset/disney.mrs',
-        'path-in-bundle': 'geo/geosite/disney.mrs',
+        path:
+          './ruleset/disney.mrs',
+        'path-in-bundle':
+          'geo/geosite/disney.mrs',
       },
 
       niconico: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/niconico.mrs',
-        path: './ruleset/niconico.mrs',
-        'path-in-bundle': 'geo/geosite/niconico.mrs',
+        path:
+          './ruleset/niconico.mrs',
+        'path-in-bundle':
+          'geo/geosite/niconico.mrs',
       },
 
       bbc: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bbc.mrs',
-        path: './ruleset/bbc.mrs',
-        'path-in-bundle': 'geo/geosite/bbc.mrs',
+        path:
+          './ruleset/bbc.mrs',
+        'path-in-bundle':
+          'geo/geosite/bbc.mrs',
       },
 
       pornhub: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/pornhub.mrs',
-        path: './ruleset/pornhub.mrs',
-        'path-in-bundle': 'geo/geosite/pornhub.mrs',
+        path:
+          './ruleset/pornhub.mrs',
+        'path-in-bundle':
+          'geo/geosite/pornhub.mrs',
       },
     },
 
@@ -449,12 +481,16 @@ const serviceConfigs = [
       googlefcm: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.mrs',
-        path: './ruleset/googlefcm.mrs',
-        'path-in-bundle': 'geo/geosite/googlefcm.mrs',
+        path:
+          './ruleset/googlefcm.mrs',
+        'path-in-bundle':
+          'geo/geosite/googlefcm.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/MiToverG422/Qure@master/IconSet/Color/fcm.png',
-    rules: ['RULE-SET,googlefcm,FCM'],
+    rules: [
+      'RULE-SET,googlefcm,FCM',
+    ],
   },
 
   {
@@ -464,15 +500,19 @@ const serviceConfigs = [
       google: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs',
-        path: './ruleset/google.mrs',
-        'path-in-bundle': 'geo/geosite/google.mrs',
+        path:
+          './ruleset/google.mrs',
+        'path-in-bundle':
+          'geo/geosite/google.mrs',
       },
 
       google_ip: {
         ...ruleProviderCommonIpcidr,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs',
-        path: './ruleset/google_ip.mrs',
-        'path-in-bundle': 'geo/geoip/google.mrs',
+        path:
+          './ruleset/google_ip.mrs',
+        'path-in-bundle':
+          'geo/geoip/google.mrs',
       },
     },
 
@@ -492,15 +532,19 @@ const serviceConfigs = [
       github: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.mrs',
-        path: './ruleset/github.mrs',
-        'path-in-bundle': 'geo/geosite/github.mrs',
+        path:
+          './ruleset/github.mrs',
+        'path-in-bundle':
+          'geo/geosite/github.mrs',
       },
 
       microsoft: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.mrs',
-        path: './ruleset/microsoft.mrs',
-        'path-in-bundle': 'geo/geosite/microsoft.mrs',
+        path:
+          './ruleset/microsoft.mrs',
+        'path-in-bundle':
+          'geo/geosite/microsoft.mrs',
       },
     },
 
@@ -520,12 +564,16 @@ const serviceConfigs = [
       apple: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.mrs',
-        path: './ruleset/apple.mrs',
-        'path-in-bundle': 'geo/geosite/apple.mrs',
+        path:
+          './ruleset/apple.mrs',
+        'path-in-bundle':
+          'geo/geosite/apple.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple.png',
-    rules: ['RULE-SET,apple,Apple'],
+    rules: [
+      'RULE-SET,apple,Apple',
+    ],
   },
 
   {
@@ -535,15 +583,19 @@ const serviceConfigs = [
       telegram: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.mrs',
-        path: './ruleset/telegram.mrs',
-        'path-in-bundle': 'geo/geosite/telegram.mrs',
+        path:
+          './ruleset/telegram.mrs',
+        'path-in-bundle':
+          'geo/geosite/telegram.mrs',
       },
 
       telegram_ip: {
         ...ruleProviderCommonIpcidr,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs',
-        path: './ruleset/telegram_ip.mrs',
-        'path-in-bundle': 'geo/geoip/telegram.mrs',
+        path:
+          './ruleset/telegram_ip.mrs',
+        'path-in-bundle':
+          'geo/geoip/telegram.mrs',
       },
     },
 
@@ -563,12 +615,16 @@ const serviceConfigs = [
       steam: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/steam.mrs',
-        path: './ruleset/steam.mrs',
-        'path-in-bundle': 'geo/geosite/steam.mrs',
+        path:
+          './ruleset/steam.mrs',
+        'path-in-bundle':
+          'geo/geosite/steam.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Steam.png',
-    rules: ['RULE-SET,steam,Steam'],
+    rules: [
+      'RULE-SET,steam,Steam',
+    ],
   },
 
   {
@@ -579,12 +635,16 @@ const serviceConfigs = [
       tiktok: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tiktok.mrs',
-        path: './ruleset/tiktok.mrs',
-        'path-in-bundle': 'geo/geosite/tiktok.mrs',
+        path:
+          './ruleset/tiktok.mrs',
+        'path-in-bundle':
+          'geo/geosite/tiktok.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/TikTok.png',
-    rules: ['RULE-SET,tiktok,TikTok'],
+    rules: [
+      'RULE-SET,tiktok,TikTok',
+    ],
   },
 
   {
@@ -594,15 +654,19 @@ const serviceConfigs = [
       twitter: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitter.mrs',
-        path: './ruleset/twitter.mrs',
-        'path-in-bundle': 'geo/geosite/twitter.mrs',
+        path:
+          './ruleset/twitter.mrs',
+        'path-in-bundle':
+          'geo/geosite/twitter.mrs',
       },
 
       twitter_ip: {
         ...ruleProviderCommonIpcidr,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/twitter.mrs',
-        path: './ruleset/twitter_ip.mrs',
-        'path-in-bundle': 'geo/geoip/twitter.mrs',
+        path:
+          './ruleset/twitter_ip.mrs',
+        'path-in-bundle':
+          'geo/geoip/twitter.mrs',
       },
     },
 
@@ -622,15 +686,19 @@ const serviceConfigs = [
       emby: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/666OS/rules@release/mihomo/domain/Emby.mrs',
-        path: './ruleset/emby.mrs',
-        'path-in-bundle': 'geo/geosite/category-emby.mrs',
+        path:
+          './ruleset/emby.mrs',
+        'path-in-bundle':
+          'geo/geosite/category-emby.mrs',
       },
 
       emos: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/binaryu/emos-proxy-rule@main/rules/emos-mihomo.mrs',
-        path: './ruleset/emos.mrs',
-        'path-in-bundle': 'geo/geosite/category-emby.mrs',
+        path:
+          './ruleset/emos.mrs',
+        'path-in-bundle':
+          'geo/geosite/category-emby.mrs',
       },
     },
 
@@ -660,12 +728,16 @@ const serviceConfigs = [
       pikpak: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/pikpak.mrs',
-        path: './ruleset/pikpak.mrs',
-        'path-in-bundle': 'geo/geosite/pikpak.mrs',
+        path:
+          './ruleset/pikpak.mrs',
+        'path-in-bundle':
+          'geo/geosite/pikpak.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/lige47/QuanX-icon-rule@main/icon/03CNSoft/pikpak.png',
-    rules: ['RULE-SET,pikpak,PikPak'],
+    rules: [
+      'RULE-SET,pikpak,PikPak',
+    ],
   },
 
   {
@@ -676,33 +748,41 @@ const serviceConfigs = [
       spotify: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/spotify.mrs',
-        path: './ruleset/spotify.mrs',
-        'path-in-bundle': 'geo/geosite/spotify.mrs',
+        path:
+          './ruleset/spotify.mrs',
+        'path-in-bundle':
+          'geo/geosite/spotify.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Spotify.png',
-    rules: ['RULE-SET,spotify,Spotify'],
+    rules: [
+      'RULE-SET,spotify,Spotify',
+    ],
   },
 
   {
-  name: 'Crypto',
-  baseOption: selectBaseOption,
-  defaultSelected: '日本',
+    name: 'Crypto',
+    baseOption: selectBaseOption,
+    defaultSelected: '日本',
 
-  // 允许 Crypto 策略组选择直连
-  direct: true,
+    // 允许 Crypto 策略组选择直连
+    direct: true,
 
-  providers: {
-    cryptocurrency: {
-      ...ruleProviderCommonDomain,
-      url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-cryptocurrency.mrs',
-      path: './ruleset/cryptocurrency.mrs',
-      'path-in-bundle': 'geo/geosite/category-cryptocurrency.mrs',
+    providers: {
+      cryptocurrency: {
+        ...ruleProviderCommonDomain,
+        url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-cryptocurrency.mrs',
+        path:
+          './ruleset/cryptocurrency.mrs',
+        'path-in-bundle':
+          'geo/geosite/category-cryptocurrency.mrs',
+      },
     },
+    icon: 'https://fastly.jsdelivr.net/gh/lige47/QuanX-icon-rule@main/icon/04ProxySoft/Bitcoin.png',
+    rules: [
+      'RULE-SET,cryptocurrency,Crypto',
+    ],
   },
-  icon: 'https://fastly.jsdelivr.net/gh/lige47/QuanX-icon-rule@main/icon/04ProxySoft/Bitcoin.png',
-  rules: ['RULE-SET,cryptocurrency,Crypto'],
-},
 
   {
     name: 'EHentai',
@@ -712,12 +792,16 @@ const serviceConfigs = [
       ehentai: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/ehentai.mrs',
-        path: './ruleset/ehentai.mrs',
-        'path-in-bundle': 'geo/geosite/ehentai.mrs',
+        path:
+          './ruleset/ehentai.mrs',
+        'path-in-bundle':
+          'geo/geosite/ehentai.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/lige47/QuanX-icon-rule@main/icon/04ProxySoft/exhentai.png',
-    rules: ['RULE-SET,ehentai,EHentai'],
+    rules: [
+      'RULE-SET,ehentai,EHentai',
+    ],
   },
 
   {
@@ -728,62 +812,180 @@ const serviceConfigs = [
       adblockmihomolite: {
         ...ruleProviderCommonDomain,
         url: 'https://fastly.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockmihomolite.mrs',
-        path: './ruleset/adblockmihomolite.mrs',
-        'path-in-bundle': 'geo/geosite/category-ads-all.mrs',
+        path:
+          './ruleset/adblockmihomolite.mrs',
+        'path-in-bundle':
+          'geo/geosite/category-ads-all.mrs',
       },
     },
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Advertising.png',
-    rules: ['RULE-SET,adblockmihomolite,AdBlock'],
+    rules: [
+      'RULE-SET,adblockmihomolite,AdBlock',
+    ],
   },
 ];
 
-// 节点匹配缓存
-const regionMatchCache = new Map();
+// 保留最终配置中的内置节点名和策略组名，
+// 防止机场节点或自定义节点与其发生名称冲突
+const reservedProxyNames = new Set([
+  'DIRECT',
+  'REJECT',
+  'REJECT-DROP',
+  'PASS',
+  'GLOBAL',
 
-function getMatchedRegions(proxyName) {
-  if (regionMatchCache.has(proxyName)) {
-    return regionMatchCache.get(proxyName);
+  '默认代理',
+  '漏网之鱼',
+  '直连',
+
+  '链式中转',
+  '链式落地',
+  '自建节点',
+
+  '其他节点',
+  '其他节点-自动选择',
+
+  ...serviceConfigs.map(
+    (svc) => svc.name,
+  ),
+
+  ...allRegionDefinitions.flatMap(
+    ({ name }) => [
+      name,
+      `${name}-自动选择`,
+    ],
+  ),
+
+  ...directProxies.map(
+    (proxy) => proxy.name,
+  ),
+]);
+
+function makeUniqueProxyName(
+  name,
+  usedNames,
+) {
+  // 只有与内部名称发生冲突时，
+  // 才添加“节点-”前缀
+  const baseName =
+    reservedProxyNames.has(name)
+      ? `节点-${name}`
+      : name;
+
+  let finalName = baseName;
+  let index = 2;
+
+  // 如果仍然重复，
+  // 使用 #2、#3……保留所有节点
+  while (
+    usedNames.has(finalName) ||
+    reservedProxyNames.has(
+      finalName,
+    )
+  ) {
+    finalName =
+      `${baseName} #${index}`;
+
+    index += 1;
   }
 
-  const regions = allRegionDefinitions.filter(
-    (region) => region.regex.test(proxyName),
-  );
+  usedNames.add(finalName);
 
-  regionMatchCache.set(proxyName, regions);
+  return finalName;
+}
+
+// 节点匹配缓存
+const regionMatchCache =
+  new Map();
+
+function getMatchedRegions(
+  proxyName,
+) {
+  if (
+    regionMatchCache.has(
+      proxyName,
+    )
+  ) {
+    return regionMatchCache.get(
+      proxyName,
+    );
+  }
+
+  const regions =
+    allRegionDefinitions.filter(
+      (region) =>
+        region.regex.test(
+          proxyName,
+        ),
+    );
+
+  regionMatchCache.set(
+    proxyName,
+    regions,
+  );
 
   return regions;
 }
 
-const flagRegex = /[\u{1F1E6}-\u{1F1FF}]{2}/u;
+const flagRegex =
+  /[\u{1F1E6}-\u{1F1FF}]{2}/u;
 
-function normalizeProxyName(proxy) {
-  const originalName = proxy.name;
+function normalizeProxyName(
+  proxy,
+) {
+  const originalName =
+    proxy.name;
 
-  const flag = originalName.match(flagRegex)?.[0];
+  const flag =
+    originalName.match(
+      flagRegex,
+    )?.[0];
 
   const nameWithoutFlag = (
-    flag ? originalName.replace(flag, '') : originalName
+    flag
+      ? originalName.replace(
+          flag,
+          '',
+        )
+      : originalName
   )
     .replace(/\s+/g, ' ')
     .trim();
 
-  const matchedRegions = getMatchedRegions(originalName);
+  const matchedRegions =
+    getMatchedRegions(
+      originalName,
+    );
 
   const regionFlag =
     flag ||
-    matchedRegions.find((region) => region.flag)?.flag;
+    matchedRegions.find(
+      (region) =>
+        region.flag,
+    )?.flag;
 
-  const normalizedName = regionFlag
-    ? `${regionFlag} ${nameWithoutFlag}`
-    : nameWithoutFlag;
+  const normalizedName =
+    regionFlag
+      ? `${regionFlag} ${nameWithoutFlag}`
+      : nameWithoutFlag;
 
-  if (normalizedName !== originalName) {
-    regionMatchCache.set(normalizedName, matchedRegions);
+  if (
+    normalizedName !==
+    originalName
+  ) {
+    regionMatchCache.set(
+      normalizedName,
+      matchedRegions,
+    );
   }
 
-  return normalizedName === originalName
+  return normalizedName ===
+    originalName
     ? proxy
-    : { ...proxy, name: normalizedName };
+    : {
+        ...proxy,
+        name: normalizedName,
+      };
 }
 
 function fixDialerProxy(
@@ -791,34 +993,50 @@ function fixDialerProxy(
   renameMap,
   normalizedProxyNames,
 ) {
-  const target = proxy['dialer-proxy'];
+  const target =
+    proxy['dialer-proxy'];
 
-  if (!target) return proxy;
-
-  if (renameMap.has(target)) {
-    return {
-      ...proxy,
-      'dialer-proxy': renameMap.get(target),
-    };
-  }
-
-  if (normalizedProxyNames.has(target)) {
+  if (!target) {
     return proxy;
   }
 
-  const copy = { ...proxy };
+  if (
+    renameMap.has(target)
+  ) {
+    return {
+      ...proxy,
+      'dialer-proxy':
+        renameMap.get(target),
+    };
+  }
 
-  delete copy['dialer-proxy'];
+  if (
+    normalizedProxyNames.has(
+      target,
+    )
+  ) {
+    return proxy;
+  }
+
+  const copy = {
+    ...proxy,
+  };
+
+  delete copy[
+    'dialer-proxy'
+  ];
 
   return copy;
 }
 
 function getIpVersionPreference() {
   const ipv4PreferEnabled =
-    ruleOptionsEnable.代理IPV4优先;
+    ruleOptionsEnable
+      .代理IPV4优先;
 
   const ipv6PreferEnabled =
-    ruleOptionsEnable.代理IPV6优先;
+    ruleOptionsEnable
+      .代理IPV6优先;
 
   if (
     ipv4PreferEnabled &&
@@ -837,20 +1055,25 @@ function getIpVersionPreference() {
   return null;
 }
 
-function filterAndNormalizeProxies(config) {
+function filterAndNormalizeProxies(
+  config,
+) {
   regionMatchCache.clear();
 
   const filterHighRateProxiesEnabled =
-    ruleOptionsEnable.过滤高倍率节点;
+    ruleOptionsEnable
+      .过滤高倍率节点;
 
   const filterNonRegionProxiesEnabled =
-    ruleOptionsEnable.过滤非地区节点;
+    ruleOptionsEnable
+      .过滤非地区节点;
 
   const highRateRegex =
     filterHighRateProxiesEnabled
       ? rateRegionDefinitions.find(
           (r) =>
-            r.name === highRateRegionName,
+            r.name ===
+            highRateRegionName,
         )?.regex
       : null;
 
@@ -858,76 +1081,117 @@ function filterAndNormalizeProxies(config) {
     config.proxies || [];
 
   const filteredRawProxies =
-    originalProxies.filter((proxy) => {
-      const type = String(
-        proxy.type ?? '',
-      ).toLowerCase();
+    originalProxies.filter(
+      (proxy) => {
+        const type = String(
+          proxy.type ?? '',
+        ).toLowerCase();
 
-      if (
-        type === 'direct' ||
-        type === 'reject' ||
-        type === 'rematch'
-      ) {
-        return false;
-      }
+        if (
+          type === 'direct' ||
+          type === 'reject' ||
+          type === 'rematch'
+        ) {
+          return false;
+        }
 
-      if (
-        highRateRegex?.test(proxy.name)
-      ) {
-        return false;
-      }
+        if (
+          highRateRegex?.test(
+            proxy.name,
+          )
+        ) {
+          return false;
+        }
 
-      if (
-        !filterNonRegionProxiesEnabled
-      ) {
-        return true;
-      }
+        if (
+          !filterNonRegionProxiesEnabled
+        ) {
+          return true;
+        }
 
-      const isRegionProxy =
-        getMatchedRegions(proxy.name).some(
-          (region) =>
-            regionDefinitions.includes(
-              region,
-            ),
+        const isRegionProxy =
+          getMatchedRegions(
+            proxy.name,
+          ).some(
+            (region) =>
+              regionDefinitions.includes(
+                region,
+              ),
+          );
+
+        return (
+          isRegionProxy ||
+          !excludeFilter.test(
+            proxy.name,
+          )
         );
+      },
+    );
 
-      return (
-        isRegionProxy ||
-        !excludeFilter.test(proxy.name)
-      );
-    });
+  const renameMap =
+    new Map();
 
-  const renameMap = new Map();
+  const normalizedProxies =
+    [];
 
-  const normalizedProxies = [];
-  const uniqueNames = new Set();
+  const uniqueNames =
+    new Set();
+
+  // 用于避免机场中重复原始节点名
+  // 覆盖第一个节点建立的 dialer-proxy 映射
+  const seenRawNames =
+    new Set();
 
   for (
-    const rawProxy of filteredRawProxies
+    const rawProxy of
+    filteredRawProxies
   ) {
-    const normalized =
-      normalizeProxyName(rawProxy);
+    const isFirstRawName =
+      !seenRawNames.has(
+        rawProxy.name,
+      );
 
+    seenRawNames.add(
+      rawProxy.name,
+    );
+
+    const normalized =
+      normalizeProxyName(
+        rawProxy,
+      );
+
+    const finalName =
+      makeUniqueProxyName(
+        normalized.name,
+        uniqueNames,
+      );
+
+    const finalProxy =
+      finalName ===
+      normalized.name
+        ? normalized
+        : {
+            ...normalized,
+            name: finalName,
+          };
+
+    // 同一个原始名称可能出现多次。
+    // dialer-proxy 保持指向第一个节点，
+    // 后续同名节点仅进行唯一化改名。
     if (
-      normalized.name !== rawProxy.name
+      isFirstRawName &&
+      finalProxy.name !==
+        rawProxy.name
     ) {
       renameMap.set(
         rawProxy.name,
-        normalized.name,
+        finalProxy.name,
       );
     }
 
-    if (
-      !uniqueNames.has(
-        normalized.name,
-      )
-    ) {
-      uniqueNames.add(normalized.name);
-
-      normalizedProxies.push(
-        normalized,
-      );
-    }
+    normalizedProxies.push(
+      finalProxy,
+    );
   }
 
   const normalizedProxyNames =
@@ -938,15 +1202,18 @@ function filterAndNormalizeProxies(config) {
     );
 
   const filteredProxies =
-    normalizedProxies.map((proxy) =>
-      fixDialerProxy(
-        proxy,
-        renameMap,
-        normalizedProxyNames,
-      ),
+    normalizedProxies.map(
+      (proxy) =>
+        fixDialerProxy(
+          proxy,
+          renameMap,
+          normalizedProxyNames,
+        ),
     );
 
-  if (!filteredProxies.length) {
+  if (
+    !filteredProxies.length
+  ) {
     throw new Error(
       '配置文件中未找到任何代理节点，请使用机场提供的配置文件进行覆写',
     );
@@ -955,7 +1222,9 @@ function filterAndNormalizeProxies(config) {
   const ipVersionPreference =
     getIpVersionPreference();
 
-  if (ipVersionPreference) {
+  if (
+    ipVersionPreference
+  ) {
     return filteredProxies.map(
       (proxy) =>
         proxy['ip-version'] ===
@@ -978,10 +1247,12 @@ function createRegionGroup(
   proxies,
 ) {
   const generateRegionAutoSelectEnabled =
-    ruleOptionsEnable.生成地区自动选择组;
+    ruleOptionsEnable
+      .生成地区自动选择组;
 
   const hideManualSelectGroupEnabled =
-    ruleOptionsEnable.隐藏地区手动选择组;
+    ruleOptionsEnable
+      .隐藏地区手动选择组;
 
   if (
     generateRegionAutoSelectEnabled
@@ -1027,12 +1298,16 @@ function buildRegionGroups(
   customProxies,
 ) {
   const generateRateGroupEnabled =
-    ruleOptionsEnable.生成倍率组;
+    ruleOptionsEnable
+      .生成倍率组;
 
   const regionGroups =
     Object.fromEntries(
       allRegionDefinitions.map(
-        ({ name }) => [name, []],
+        ({ name }) => [
+          name,
+          [],
+        ],
       ),
     );
 
@@ -1045,17 +1320,21 @@ function buildRegionGroups(
     ]
   ) {
     const matchedRegions =
-      getMatchedRegions(proxy.name);
+      getMatchedRegions(
+        proxy.name,
+      );
 
     const isRegionProxy =
-      matchedRegions.some((region) =>
-        regionDefinitions.includes(
-          region,
-        ),
+      matchedRegions.some(
+        (region) =>
+          regionDefinitions.includes(
+            region,
+          ),
       );
 
     for (
-      const region of matchedRegions
+      const region of
+      matchedRegions
     ) {
       regionGroups[
         region.name
@@ -1063,7 +1342,9 @@ function buildRegionGroups(
     }
 
     if (!isRegionProxy) {
-      otherProxies.push(proxy.name);
+      otherProxies.push(
+        proxy.name,
+      );
     }
   }
 
@@ -1109,9 +1390,12 @@ function buildCustomizeGroups(
     customizeProxies,
 ) {
   const chainEnabled =
-    ruleOptionsEnable.链式代理;
+    ruleOptionsEnable
+      .链式代理;
 
-  if (!customizeList.length) {
+  if (
+    !customizeList.length
+  ) {
     if (chainEnabled) {
       throw new Error(
         '启用失败，请在脚本中添加自定义节点后尝试',
@@ -1125,6 +1409,8 @@ function buildCustomizeGroups(
     };
   }
 
+  // 同时包含所有机场节点名称，
+  // 防止自定义节点与机场节点重名
   const usedNames =
     new Set(
       filteredProxies.map(
@@ -1132,31 +1418,24 @@ function buildCustomizeGroups(
       ),
     );
 
-  const customPrefix = '自建-';
-
   const customProxies = [];
 
   for (
-    const proxy of customizeList
+    const proxy of
+    customizeList
   ) {
     const normalized =
-      normalizeProxyName(proxy);
-
-    let name = normalized.name;
-
-    while (
-      usedNames.has(name)
-    ) {
-      name = normalizeProxyName({
-        name:
-          `${customPrefix}${name}`,
-      }).name.replace(
-        `${customPrefix} `,
-        customPrefix,
+      normalizeProxyName(
+        proxy,
       );
-    }
 
-    usedNames.add(name);
+    // 自定义节点与机场节点使用
+    // 完全相同的名称冲突保护逻辑
+    const name =
+      makeUniqueProxyName(
+        normalized.name,
+        usedNames,
+      );
 
     let customProxy =
       name === normalized.name
@@ -1186,22 +1465,27 @@ function buildCustomizeGroups(
 
   const customGroup = {
     ...selectBaseOption,
+
     name: chainEnabled
       ? '链式落地'
       : '自建节点',
+
     proxies:
       customProxies.map(
         (p) => p.name,
       ),
+
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Server.png',
   };
 
   return {
     customProxies,
+
     customProxyNames:
       customProxies.map(
         (p) => p.name,
       ),
+
     customGroup,
   };
 }
@@ -1212,16 +1496,20 @@ function buildFunctionalGroups(
   customizeInfo,
 ) {
   const blockForeignQuicEnabled =
-    ruleOptionsEnable.屏蔽国外QUIC;
+    ruleOptionsEnable
+      .屏蔽国外QUIC;
 
   const addAllNodesToServiceGroupsEnabled =
-    ruleOptionsEnable.分流组添加所有节点;
+    ruleOptionsEnable
+      .分流组添加所有节点;
 
   const chainEnabled =
-    ruleOptionsEnable.链式代理;
+    ruleOptionsEnable
+      .链式代理;
 
   const hideManualSelectGroupEnabled =
-    ruleOptionsEnable.隐藏地区手动选择组;
+    ruleOptionsEnable
+      .隐藏地区手动选择组;
 
   const functionalGroups = [];
   const functionalRules = [];
@@ -1233,13 +1521,15 @@ function buildFunctionalGroups(
   if (
     !blockForeignQuicEnabled
   ) {
-    delete finalRuleProviders.cn_additional;
+    delete finalRuleProviders
+      .cn_additional;
   }
 
   const {
     customProxyNames = [],
     customGroup = null,
-  } = customizeInfo || {};
+  } =
+    customizeInfo || {};
 
   const filteredProxyNames =
     filteredProxies.map(
@@ -1257,7 +1547,9 @@ function buildFunctionalGroups(
         (g) =>
           g.type === 'select',
       )
-      .map((g) => g.name);
+      .map(
+        (g) => g.name,
+      );
 
   const baseGroupNames =
     baseGroups
@@ -1267,7 +1559,9 @@ function buildFunctionalGroups(
             g.name
           ],
       )
-      .map((g) => g.name);
+      .map(
+        (g) => g.name,
+      );
 
   const customGroupNames =
     customGroup
@@ -1276,28 +1570,31 @@ function buildFunctionalGroups(
 
   functionalGroups.push({
     ...selectBaseOption,
+
     name: '默认代理',
+
     proxies: [
       ...groupNamesOfSelect,
       ...baseGroupNames,
       ...customGroupNames,
     ],
+
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png',
   });
 
-  const orderedServiceConfigs =
-    [
-      ...serviceConfigs.filter(
-        (svc) =>
-          svc.name ===
-          'AdBlock',
-      ),
-      ...serviceConfigs.filter(
-        (svc) =>
-          svc.name !==
-          'AdBlock',
-      ),
-    ];
+  const orderedServiceConfigs = [
+    ...serviceConfigs.filter(
+      (svc) =>
+        svc.name ===
+        'AdBlock',
+    ),
+
+    ...serviceConfigs.filter(
+      (svc) =>
+        svc.name !==
+        'AdBlock',
+    ),
+  ];
 
   for (
     const svc of
@@ -1322,7 +1619,8 @@ function buildFunctionalGroups(
   }
 
   for (
-    const svc of serviceConfigs
+    const svc of
+    serviceConfigs
   ) {
     if (
       !ruleOptionsEnable[
@@ -1338,7 +1636,9 @@ function buildFunctionalGroups(
       groupProxies = [
         ...allProxiesNames,
       ];
-    } else if (svc.reject) {
+    } else if (
+      svc.reject
+    ) {
       groupProxies = [
         'REJECT',
         'REJECT-DROP',
@@ -1352,6 +1652,7 @@ function buildFunctionalGroups(
               ...customGroupNames,
               ...baseGroupNames,
               ...groupNamesOfSelect,
+
               ...(
                 svc.direct
                   ? ['直连']
@@ -1364,6 +1665,7 @@ function buildFunctionalGroups(
               ...baseGroupNames,
               ...groupNamesOfSelect,
               ...allProxiesNames,
+
               ...(
                 svc.direct
                   ? ['直连']
@@ -1374,6 +1676,7 @@ function buildFunctionalGroups(
 
     functionalGroups.push({
       ...svc.baseOption,
+
       name: svc.name,
       icon: svc.icon,
       proxies: groupProxies,
@@ -1393,25 +1696,33 @@ function buildFunctionalGroups(
   functionalGroups.push(
     {
       ...selectBaseOption,
+
       name: '漏网之鱼',
+
       proxies: [
         '默认代理',
         '直连',
         ...groupNamesOfSelect,
       ],
+
       icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Stack.png',
     },
 
     {
       ...selectBaseOption,
+
       name: '直连',
+
       proxies: [
         ...directProxies.map(
           (p) => p.name,
         ),
       ],
+
       url: 'https://connectivitycheck.platform.hicloud.com/generate_204',
+
       icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/China_Map.png',
+
       hidden:
         hideManualSelectGroupEnabled,
     },
@@ -1428,27 +1739,32 @@ function buildFunctionalGroups(
     customGroup
       ? {
           ...selectBaseOption,
+
           name:
             dialerProxyName,
+
           proxies:
             filteredProxyNames,
+
           icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bypass.png',
         }
       : null;
 
-const globalGroup = {
-  ...selectBaseOption,
-  name: 'GLOBAL',
+  const globalGroup = {
+    ...selectBaseOption,
 
-  proxies: [
-    ...baseGroupNames,
-    ...groupNamesOfSelect,
-    ...allProxiesNames,
-    directProxies[0].name,
-  ],
+    name: 'GLOBAL',
 
-  icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png',
-};
+    proxies: [
+      ...baseGroupNames,
+      ...groupNamesOfSelect,
+      ...allProxiesNames,
+      directProxies[0].name,
+    ],
+
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png',
+  };
+
   return {
     globalGroup,
     functionalGroups,
@@ -1657,7 +1973,8 @@ function applyHostsToProxies(
 ) {
   if (
     !hosts ||
-    typeof hosts !== 'object'
+    typeof hosts !==
+      'object'
   ) {
     return proxies;
   }
@@ -1709,9 +2026,11 @@ function applyHostsToProxies(
       );
     }
 
-    return typeof value ===
-      'string' &&
+    return (
+      typeof value ===
+        'string' &&
       value.length > 0
+    )
       ? value
       : null;
   };
@@ -1728,17 +2047,20 @@ function applyHostsToProxies(
       );
 
     if (
-      cached !== undefined
+      cached !==
+      undefined
     ) {
       return cached;
     }
 
-    const seen = new Set();
+    const seen =
+      new Set();
 
     let current =
       server.toLowerCase();
 
-    let result = server;
+    let result =
+      server;
 
     while (
       !seen.has(current)
@@ -1756,7 +2078,9 @@ function applyHostsToProxies(
 
       const target =
         entry &&
-        targetOf(entry[1]);
+        targetOf(
+          entry[1],
+        );
 
       if (!target) {
         break;
@@ -1786,7 +2110,9 @@ function applyHostsToProxies(
       }
 
       const server =
-        resolve(proxy.server);
+        resolve(
+          proxy.server,
+        );
 
       return server ===
         proxy.server
@@ -1799,8 +2125,11 @@ function applyHostsToProxies(
   );
 }
 
-function stripDnsSuffix(dns) {
-  const str = String(dns);
+function stripDnsSuffix(
+  dns,
+) {
+  const str =
+    String(dns);
 
   const hashIndex =
     str.indexOf('#');
@@ -1811,10 +2140,13 @@ function stripDnsSuffix(dns) {
     return str;
   }
 
-  const suffix = str
-    .slice(hashIndex + 1)
-    .toLowerCase()
-    .trim();
+  const suffix =
+    str
+      .slice(
+        hashIndex + 1,
+      )
+      .toLowerCase()
+      .trim();
 
   if (
     suffix === 'direct' ||
@@ -1899,8 +2231,9 @@ function buildDnsAndHostsConfig(
             typeof proxy.server ===
             'string',
         )
-        .map((proxy) =>
-          proxy.server.toLowerCase(),
+        .map(
+          (proxy) =>
+            proxy.server.toLowerCase(),
         ),
     );
 
@@ -1945,7 +2278,9 @@ function buildDnsAndHostsConfig(
 
         ...privateProxyServerNameservers,
       ]
-        .map(stripDnsSuffix)
+        .map(
+          stripDnsSuffix,
+        )
         .filter(
           (dns) =>
             dns.length > 0 &&
@@ -1995,9 +2330,7 @@ function buildDnsAndHostsConfig(
           );
 
     if (
-      Array.isArray(
-        value,
-      ) &&
+      Array.isArray(value) &&
       value.length === 0
     ) {
       continue;
@@ -2030,7 +2363,8 @@ function buildDnsAndHostsConfig(
     enable: true,
     ipv6: true,
 
-    'use-hosts': true,
+    'use-hosts':
+      true,
 
     'cache-algorithm':
       'arc',
@@ -2054,8 +2388,7 @@ function buildDnsAndHostsConfig(
     ],
 
     'proxy-server-nameserver':
-      privateDNS.length >
-      0
+      privateDNS.length > 0
         ? privateDNS
         : chinaDohDNS,
 
@@ -2122,6 +2455,7 @@ function buildDnsAndHostsConfig(
   return {
     dns,
     hosts,
+
     proxies:
       mappedProxies,
   };
@@ -2139,9 +2473,10 @@ function main(config) {
     customProxies,
     customProxyNames,
     customGroup,
-  } = buildCustomizeGroups(
-    filteredProxies,
-  );
+  } =
+    buildCustomizeGroups(
+      filteredProxies,
+    );
 
   const generatedRegionGroups =
     buildRegionGroups(
@@ -2155,28 +2490,33 @@ function main(config) {
     functionalRules,
     finalRuleProviders,
     chainGroup,
-  } = buildFunctionalGroups(
-    filteredProxies,
-    generatedRegionGroups,
-    {
-      customProxyNames,
-      customGroup,
-    },
-  );
+  } =
+    buildFunctionalGroups(
+      filteredProxies,
+      generatedRegionGroups,
+      {
+        customProxyNames,
+        customGroup,
+      },
+    );
 
   const {
     dns,
     hosts,
     proxies: mappedProxies,
-  } = buildDnsAndHostsConfig(
-    config,
-    filteredProxies,
-  );
+  } =
+    buildDnsAndHostsConfig(
+      config,
+      filteredProxies,
+    );
 
-  newConfig['dns'] = dns;
+  newConfig[
+    'dns'
+  ] = dns;
 
-  newConfig['hosts'] =
-    hosts;
+  newConfig[
+    'hosts'
+  ] = hosts;
 
   newConfig[
     'mixed-port'
@@ -2188,11 +2528,13 @@ function main(config) {
     'allow-lan'
   ] = false;
 
-  newConfig['ipv6'] =
-    true;
+  newConfig[
+    'ipv6'
+  ] = true;
 
-  newConfig['mode'] =
-    'rule';
+  newConfig[
+    'mode'
+  ] = 'rule';
 
   newConfig[
     'log-level'
@@ -2202,7 +2544,8 @@ function main(config) {
   // 代理端口仅监听本机回环地址
   newConfig[
     'bind-address'
-  ] = '127.0.0.1';
+  ] =
+    '127.0.0.1';
 
   newConfig[
     'unified-delay'
@@ -2222,7 +2565,8 @@ function main(config) {
 
   newConfig[
     'external-controller'
-  ] = '127.0.0.1:9090';
+  ] =
+    '127.0.0.1:9090';
 
   newConfig[
     'external-ui'
@@ -2233,7 +2577,9 @@ function main(config) {
   ] =
     'https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip';
 
-  newConfig['profile'] = {
+  newConfig[
+    'profile'
+  ] = {
     'store-selected':
       true,
 
@@ -2241,7 +2587,9 @@ function main(config) {
       true,
   };
 
-  newConfig['ntp'] = {
+  newConfig[
+    'ntp'
+  ] = {
     enable: true,
 
     'write-to-system':
@@ -2255,10 +2603,13 @@ function main(config) {
     interval: 60,
   };
 
-  newConfig['tun'] = {
+  newConfig[
+    'tun'
+  ] = {
     enable: true,
 
-    stack: 'system',
+    stack:
+      'system',
 
     'auto-route':
       true,
