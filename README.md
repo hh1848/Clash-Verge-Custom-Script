@@ -1,407 +1,422 @@
 # Clash Verge Custom Script
 
-面向 [Clash Verge Rev](https://github.com/clash-verge-rev/clash-verge-rev) / [Mihomo](https://github.com/MetaCubeX/mihomo) 的全量配置覆写脚本。项目基于 [AIsouler/MyClash](https://github.com/AIsouler/MyClash) 的 `mihomoScript.js` 定制，重点优化代理组组织、地区节点识别、GLOBAL 节点选择、应用分流、DNS/TUN 配置和本机安全默认值。
+面向 **Clash Verge Rev / Mihomo** 的全局扩展脚本。
+
+当前版本基于 `MihomoProPlus` 配置思路重构，目标不是把多个机场写死在脚本里，而是：
+
+> **保留当前订阅提供的节点或 `proxy-providers`，统一覆盖代理组、分流规则、Rule Provider、DNS、Sniffer、Hosts 与部分 TUN 参数。**
+
+这样以后在 Clash Verge Rev 中导入新的机场订阅，只要启用本脚本，就会自动生成同一套代理组与分流结构，无需逐个修改机场配置。
 
 > [!IMPORTANT]
-> 本仓库只提供配置覆写脚本，不提供代理节点、机场订阅、网络接入或相关售卖服务。使用前仍需准备一份包含有效 `proxies` 的 Mihomo/Clash 订阅配置。
+> 本仓库仅提供 Mihomo / Clash Verge Rev 配置脚本，不提供代理节点、机场订阅、网络接入或相关售卖服务。
 
-## 核心能力
+---
 
-| 能力 | 说明 |
-| --- | --- |
-| 全量配置覆写 | 统一生成代理组、规则、Rule Provider、DNS、hosts、TUN 与通用 Mihomo 设置 |
-| 应用级分流 | 内置 AI、媒体、Google、Microsoft、Telegram、Crypto、AdBlock 等 16 个服务组 |
-| 地区与倍率分组 | 自动识别香港、日本、美国、新加坡、韩国、台湾省以及低/高倍率节点 |
-| 灵活的 GLOBAL | 全局模式可选择基础组、地区组、自建具体节点、机场节点或双栈直连 |
-| 节点清洗 | 过滤伪节点、去重、补全地区 Emoji，并修复重命名后的 `dialer-proxy` 引用 |
-| 本机安全默认值 | 默认禁止 LAN 访问，代理端口与 External Controller 仅监听本机 |
+## 核心特性
 
-## 目录
+- **适配多个机场订阅**：不需要在脚本中填写机场 URL，直接使用当前订阅中的 `proxies` / `proxy-providers`。
+- **全局统一代理组**：不同机场导入后自动得到相同的代理组结构。
+- **全球手动置顶**：`全球手动` 位于代理页面第一项，可直接选择当前机场的全部有效节点。
+- **地区自动识别**：香港、台湾、新加坡、日本、韩国、美国、欧盟自动分类。
+- **自动测速**：每个主要地区均生成 `url-test` 自动选择组。
+- **两种负载均衡**：每个主要地区均提供 `consistent-hashing` 与 `round-robin`。
+- **应用级分流**：AI、GitHub、Google、Microsoft、Apple、Telegram、Twitter、Crypto、游戏、Emby、YouTube、Netflix 等独立策略组。
+- **广告与跟踪拦截**：整合 Tracking、Advertising 与 AWAvenue Ads 规则。
+- **Fake-IP DNS**：区分国内直连 DNS 与国外 DoH，并根据规则集分配解析策略。
+- **TUN 参数补充**：保留 Clash Verge 当前 TUN 配置，只补充 `mixed` 栈、DNS 劫持、自动路由等参数。
+- **不接管 Clash Verge 端口**：不会强制覆盖 `mixed-port`、`external-controller`、`secret`、`listeners` 等由 Clash Verge 管理的配置。
 
-- [快速开始](#快速开始)
-- [效果预览](#效果预览)
-- [策略组架构](#策略组架构)
-- [网络与解析](#网络与解析)
-- [节点过滤与名称规范化](#节点过滤与名称规范化)
-- [配置参考](#配置参考)
-- [Rule Provider](#rule-provider)
-- [注意事项](#注意事项)
-- [常见问题](#常见问题)
+---
 
-## 快速开始
+## 文件
 
-### 方法一：复制脚本
+```text
+Clash-Verge-Custom-Script/
+├── mihomoScript.js    # Clash Verge Rev 全局扩展脚本
+└── README.md
+```
 
-1. 打开 [`mihomoScript.js`](./mihomoScript.js) 并复制完整代码。
-2. 在 Clash Verge Rev 中打开当前订阅使用的“扩展脚本”或“全局扩展覆写脚本”入口。
-3. 粘贴代码并保存，然后重新更新订阅。
-4. 在“代理”页面检查 `默认代理`、应用分流组和地区组是否已经生成。
+主脚本：[`mihomoScript.js`](./mihomoScript.js)
 
-Clash Verge Rev 不同版本的菜单名称可能略有差异。关键是让该 JavaScript 在订阅配置加载时作为 Mihomo 覆写脚本执行。
-
-### 方法二：使用 GitHub Raw
-
-需要远程脚本 URL 时，可使用：
+Raw 地址：
 
 ```text
 https://raw.githubusercontent.com/hh1848/Clash-Verge-Custom-Script/main/mihomoScript.js
 ```
 
-[打开 Raw 脚本](https://raw.githubusercontent.com/hh1848/Clash-Verge-Custom-Script/main/mihomoScript.js)
+> Raw 地址用于获取/同步脚本源码。Clash Verge Rev 的“全局扩展脚本”编辑器中应粘贴 JavaScript 代码本身，而不是把 Raw 地址当成机场订阅链接。
 
-### 推荐模式
+---
 
-日常使用建议保持“规则”模式，并分别设置 `默认代理`、`AI`、`Media`、`Google`、`Crypto` 等策略组。临时需要让所有代理流量使用同一策略或节点时，切换到“全局”模式后在 `GLOBAL` 中选择即可。
+## 使用方法
 
-## 效果预览
+### 1. 导入机场订阅
 
-### 首页与代理模式
+先在 Clash Verge Rev 的 **订阅** 页面正常导入你的机场订阅。
 
-[![Clash Verge Rev 首页与代理模式](docs/images/home-overview.png)](docs/images/home-overview.png)
-
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <strong>基础与核心分流组</strong><br><br>
-      <a href="docs/images/proxy-groups-core.png">
-        <img src="docs/images/proxy-groups-core.png" alt="基础与核心分流组" width="100%">
-      </a>
-    </td>
-    <td align="center" width="50%">
-      <strong>更多应用分流组</strong><br><br>
-      <a href="docs/images/proxy-groups-services.png">
-        <img src="docs/images/proxy-groups-services.png" alt="更多应用分流组" width="100%">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <strong>地区与倍率节点组</strong><br><br>
-      <a href="docs/images/proxy-groups-regions.png">
-        <img src="docs/images/proxy-groups-regions.png" alt="地区与倍率节点组" width="100%">
-      </a>
-    </td>
-    <td align="center" width="50%">
-      <strong>规则集合</strong><br><br>
-      <a href="docs/images/rule-providers.png">
-        <img src="docs/images/rule-providers.png" alt="规则集合" width="100%">
-      </a>
-    </td>
-  </tr>
-</table>
-
-点击任意图片可查看原始尺寸。
-
-## 策略组架构
-
-脚本会读取订阅中的原始节点，完成过滤与名称规范化后，依次生成基础组、地区组、应用分流组、GLOBAL、直连组和最终规则：
+可以同时保存多个机场，例如：
 
 ```text
-订阅 proxies
-  └─ 节点过滤、去重与名称规范化
-      ├─ 基础策略组
-      ├─ 地区 / 倍率策略组
-      ├─ 应用分流策略组
-      ├─ 自建 / 链式代理组（可选）
-      └─ GLOBAL + 直连 + 漏网之鱼
+机场 A
+机场 B
+机场 C
+机场 D
 ```
 
-### 基础策略组
+本脚本不要求提前知道机场名称，也不需要手动填写每个机场的订阅 URL。
 
-| 策略组 | 类型 | 行为 |
+### 2. 打开全局扩展脚本
+
+进入：
+
+```text
+Clash Verge Rev
+→ 订阅
+→ 全局扩展脚本（Script）
+```
+
+注意是 **全局扩展脚本**，不是“全局扩展覆写配置 / Merge”。
+
+### 3. 粘贴脚本
+
+打开 [`mihomoScript.js`](./mihomoScript.js)，复制完整代码，粘贴到 Clash Verge Rev 的全局扩展脚本编辑器并保存。
+
+### 4. 刷新并选择机场
+
+回到订阅页面：
+
+1. 刷新机场订阅；
+2. 点击该订阅使其成为当前配置；
+3. 打开 **代理** 页面。
+
+只要机场配置中存在有效 `proxies` 或 `proxy-providers`，脚本就会自动套用统一配置。
+
+以后新增机场时仍然是：
+
+```text
+粘贴机场订阅链接
+        ↓
+导入 Clash Verge Rev
+        ↓
+选择该机场
+        ↓
+全局扩展脚本自动执行
+        ↓
+生成统一代理组 / DNS / 规则
+```
+
+无需再次修改脚本。
+
+---
+
+## 脚本处理逻辑
+
+脚本的核心入口：
+
+```javascript
+function main(config, profileName) {
+  // ...
+  return config;
+}
+```
+
+执行时遵循以下逻辑：
+
+```text
+当前机场订阅
+│
+├─ proxies                  ┐
+└─ proxy-providers          ┘ 保留
+        │
+        ▼
+全局扩展脚本
+        │
+        ├─ 重建 proxy-groups
+        ├─ 重建 rules
+        ├─ 重建 rule-providers
+        ├─ 重建 dns
+        ├─ 重建 sniffer
+        ├─ 合并 hosts
+        └─ 补充 tun / profile / experimental 参数
+        │
+        ▼
+最终 Mihomo 配置
+```
+
+### 空订阅保护
+
+如果当前配置既没有 `proxies`，也没有 `proxy-providers`，脚本直接返回原配置，不进行覆盖。
+
+### MihomoProPlus 名称保护
+
+如果 Profile 名称中包含：
+
+```text
+MihomoProPlus
+```
+
+脚本会跳过处理，避免对原始模板再次套用全局覆写。
+
+---
+
+## 代理组架构
+
+当前脚本生成 **54 个代理组**。
+
+### 主要代理组
+
+| 代理组 | 类型 | 说明 |
 | --- | --- | --- |
-| `手动选择` | `select` | 包含清洗后的全部可用机场节点 |
-| `自动选择` | `url-test` | 定期测速并选择延迟较低的节点 |
-| `负载均衡` | `load-balance` | 使用 `sticky-sessions` 分配连接 |
+| `全球手动` | `select` | 位于第一项，直接显示当前订阅的全部有效节点 |
+| `默认代理` | `select` | 常规代理入口 |
+| `故障转移` | `fallback` | 地区策略之间自动故障切换 |
+| `国外流量` | `select` | 通用国外流量 |
+| `国内流量` | `select` | 国内规则流量，默认可直连 |
+| `兜底流量` | `select` | 最终 `MATCH` 兜底 |
+| `直接连接` | `select` | 包含 `DIRECT`，默认隐藏 |
+| `网络测试` | `select` | Speedtest 等测速流量 |
 
-测速与健康检查共用以下参数：
+`全球手动` 使用 `include-all: true`，因此可以直接聚合当前配置中的节点与代理提供者。
+
+---
+
+## 应用与服务分流
+
+脚本提供以下独立策略组：
+
+| 策略组 | 主要用途 |
+| --- | --- |
+| `人工智能` | AI / 大模型相关服务 |
+| `货币平台` | Crypto / 数字资产相关服务 |
+| `游戏平台` | 游戏相关规则 |
+| `Github` | GitHub |
+| `微软服务` | Microsoft |
+| `谷歌服务` | Google |
+| `苹果服务` | Apple |
+| `电报消息` | Telegram |
+| `推特社交` | Twitter / X |
+| `社交平台` | 其他社交媒体 |
+| `Emby服` | Emby |
+| `油管视频` | YouTube |
+| `奈飞视频` | Netflix |
+| `国际媒体` | Streaming / 国际流媒体 |
+| `新闻媒体` | 新闻媒体 |
+| `抖快书定位` | 抖音 / 快手 / 小红书等定位类分流 |
+| `UKwifi` | WiFi Calling 相关规则 |
+
+其中：
+
+- `人工智能` 默认优先从美国策略开始选择；
+- `货币平台` 默认优先从新加坡策略开始选择；
+- 其他大多数国外服务可在默认代理、故障转移、各地区策略、全球手动和直连之间选择。
+
+---
+
+## 地区策略
+
+脚本自动识别以下地区：
+
+```text
+香港
+台湾
+新加坡（狮城）
+日本
+韩国
+美国
+欧盟
+```
+
+节点识别依据节点名称中的中文地区名、国旗、常见英文缩写和部分机场代码，例如：
+
+```text
+香港：港 / 🇭🇰 / HK / Hong / HKG
+日本：日 / 🇯🇵 / JP / Japan / NRT / HND / KIX
+美国：美 / 🇺🇸 / US / USA / LAX / SFO / JFK
+新加坡：坡 / 🇸🇬 / SG / Sing / SIN
+韩国：韩 / 🇰🇷 / KR / KOR / Korea
+台湾：台 / 🇹🇼 / TW / TPE / TSA / KHH
+欧盟：欧洲国家名称、国旗以及 FRA / AMS / MAD / FCO / MUC 等
+```
+
+没有被这些主要地区规则匹配的节点会进入：
+
+```text
+冷门自选
+```
+
+---
+
+## 地区自动选择与负载均衡
+
+每个主要地区都会自动生成 4 个层级：
+
+以香港为例：
+
+```text
+香港策略
+├── 香港自动
+├── 香港均衡-散列
+├── 香港均衡-轮询
+└── 香港具体节点...
+```
+
+### 自动测速
+
+自动组使用：
 
 ```yaml
-interval: 600
-timeout: 3000
-url: https://g.cn/generate_204
+type: url-test
+url: https://www.google.com/generate_204
+interval: 200
 lazy: true
-max-failed-times: 3
-empty-fallback: REJECT
 ```
 
-`自动选择` 与地区自动选择组另设 `tolerance: 50`；`自动选择` 和 `负载均衡` 会排除 `DIRECT` 类型节点。
+### 一致性散列
 
-### 默认代理与应用分流组
-
-`默认代理` 汇总已启用的基础组、地区手动选择组和自建/链式组。各应用分流组默认从这些上层策略中选择；开启 `分流组添加所有节点` 后，应用组还会直接包含所有具体节点。
-
-| 策略组 | 主要用途 | 脚本默认选择 | 可选直连 |
-| --- | --- | --- | :---: |
-| `AI` | AI / 大模型相关服务 | 美国 | — |
-| `Media` | YouTube、Instagram、Netflix、HBO、Twitch、Disney+、Niconico、BBC、Pornhub | 日本 | — |
-| `FCM` | Google Firebase Cloud Messaging | 直连 | ✓ |
-| `Google` | Google 域名与 IP | — | — |
-| `Microsoft` | Microsoft；GitHub 规则归入 `默认代理` | — | ✓ |
-| `Apple` | Apple 服务 | — | ✓ |
-| `Telegram` | Telegram 域名与 IP | — | — |
-| `Steam` | Steam | — | ✓ |
-| `TikTok` | TikTok | 日本 | — |
-| `Twitter` | Twitter / X 域名与 IP | — | — |
-| `Emby` | Emby、相关域名、客户端进程与 EMOS 规则 | — | ✓ |
-| `PikPak` | PikPak | — | ✓ |
-| `Spotify` | Spotify | — | ✓ |
-| `Crypto` | 加密货币相关网站与服务 | 日本 | ✓ |
-| `EHentai` | EHentai | 美国 | — |
-| `AdBlock` | 广告拦截 | — | `REJECT` / `REJECT-DROP` / `PASS` |
-
-`profile.store-selected: true` 会保留用户已经做过的策略组选择。因此，更新订阅后，界面中的现有选择可能优先于上表的 `default-selected`。
-
-### 地区与倍率分组
-
-脚本根据节点名称和地区缩写识别以下区域：
-
-| 组名 | 常见识别内容 |
-| --- | --- |
-| 香港 | 🇭🇰、香港、HK/HKG、Hong Kong |
-| 日本 | 🇯🇵、日本、樱花、JP/JPN、Japan |
-| 美国 | 🇺🇸、美国、US/USA、America、United States |
-| 新加坡 | 🇸🇬、新加坡、狮城、SG/SGP、Singapore |
-| 韩国 | 🇰🇷、韩国、首尔、KR/KOR、Korea、Seoul |
-| 台湾省 | 🇹🇼、台湾、TW/TWN、Taiwan |
-
-默认开启 `生成地区自动选择组`。每个有节点的地区通常生成两层结构：
-
-```text
-日本
-├─ 日本-自动选择
-├─ 🇯🇵 日本节点 01
-├─ 🇯🇵 日本节点 02
-└─ ...
+```yaml
+type: load-balance
+strategy: consistent-hashing
 ```
 
-`生成倍率组` 默认开启，会根据节点名称生成 `低倍率节点` 和存在匹配项时的 `高倍率节点`；未命中地区规则、但仍通过过滤的节点进入 `其他节点`。关闭 `生成倍率组` 本身只是不生成倍率策略组；高倍率节点是否被删除由 `过滤高倍率节点` 单独控制。
+适合希望同一目标尽量保持在同一节点的场景。
 
-### GLOBAL、漏网之鱼与直连
+### 轮询
 
-`GLOBAL` 同时包含：
-
-- 已启用的基础策略组；
-- 地区、倍率和其他节点的手动选择组；
-- 自建具体节点（如已配置）；
-- 所有具体代理节点；
-- `🇨🇳 直连 | 双栈`。
-
-因此，全局模式可以直接选择某个节点，而不必再进入多层代理组。规则模式下未被前置或应用规则命中的流量会进入 `漏网之鱼`，可在 `默认代理`、`直连` 和地区组之间选择。
-
-脚本内置五个 Mihomo `direct` 节点，并由 `直连` 策略组统一管理：
-
-```text
-🇨🇳 直连 | 双栈
-🇨🇳 直连 | IPv4优先
-🇨🇳 直连 | IPv6优先
-🇨🇳 直连 | 仅IPv4
-🇨🇳 直连 | 仅IPv6
+```yaml
+type: load-balance
+strategy: round-robin
 ```
 
-## 网络与解析
+用于在匹配地区的多个节点之间轮换请求。
 
-### DNS 与 Fake-IP
+地区没有匹配节点时使用：
 
-脚本会重建 DNS 与 hosts 配置，主要默认值如下：
+```yaml
+empty-fallback: COMPATIBLE
+```
+
+避免空代理组直接导致配置不可用。
+
+---
+
+## DNS
+
+脚本会重建 DNS 配置，并使用 Fake-IP：
 
 ```yaml
 dns:
   enable: true
   ipv6: true
   enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/15
-  fake-ip-range6: 2001:2::1/48
-  cache-algorithm: arc
+  fake-ip-range: 198.18.0.1/16
   use-hosts: true
-  use-system-hosts: true
+  respect-rules: true
 ```
 
-- 国内默认 DNS：`223.5.5.5`、`119.29.29.29`。
-- 国外 DoH：Cloudflare 与 Google，并通过 `默认代理` 查询。
-- 国内域名：由 `rule-set:cn` 分配到国内 DNS。
-- 直连 DNS：系统 DNS 加国内默认 DNS。
-- Fake-IP 过滤：合并 `private`、`fakeip_filter` 规则和与代理服务器域名匹配的原订阅过滤项。
-- 机场私有 DNS / hosts：脚本会提取非公共 DNS，并在满足本地 DNS 监听条件时根据 hosts 映射代理服务器地址。
-
-### TUN 与通用设置
-
-TUN 默认启用：
-
-```yaml
-tun:
-  enable: true
-  stack: system
-  auto-route: true
-  strict-route: true
-  auto-redirect: true
-  auto-detect-interface: true
-  dns-hijack:
-    - any:53
-    - tcp://any:53
-```
-
-其他关键默认值：
-
-```yaml
-mixed-port: 7890
-mode: rule
-ipv6: true
-log-level: info
-allow-lan: false
-bind-address: 127.0.0.1
-external-controller: 127.0.0.1:9090
-unified-delay: true
-tcp-concurrent: true
-find-process-mode: strict
-```
-
-`allow-lan: false`、本机回环 `bind-address` 和本机 External Controller 是有意设置的安全默认值。如果需要让手机、平板或其他局域网设备使用电脑上的代理，必须自行评估风险并修改这些值。
-
-## 节点过滤与名称规范化
-
-脚本对订阅节点执行以下处理：
-
-1. 排除 `direct`、`reject`、`rematch` 等非机场代理节点。
-2. 过滤公告、流量、到期时间、客服、网址、教程等常见伪节点名称。
-3. 按规范化后的名称去重。
-4. 根据地区识别结果为没有国旗的节点补充 Emoji 前缀。
-5. 修复节点改名后可能失效的 `dialer-proxy` 引用。
-6. 按选项过滤高倍率节点，或统一设置代理节点的 IPv4/IPv6 偏好。
-7. 当最终没有任何有效代理节点时主动报错，避免生成不可用配置。
-
-`过滤非地区节点` 默认开启，但实现并不是简单删除所有未知地区节点：名称未命中地区时，只要没有匹配全局公告/伪节点过滤规则，仍可保留并进入 `其他节点`。
-
-## 配置参考
-
-### `ruleOptionsEnable`
-
-脚本顶部的 `ruleOptionsEnable` 控制主要模块。当前默认值为：
-
-```javascript
-const ruleOptionsEnable = {
-  // 基础策略组
-  手动选择: true,
-  自动选择: true,
-  负载均衡: true,
-
-  // 以下为分流策略配置
-  AI: true,
-  Media: true,
-  FCM: true,
-  Google: true,
-  Microsoft: true,
-  Apple: true,
-  Telegram: true,
-  Steam: true,
-  TikTok: true,
-  Twitter: true,
-  Emby: true,
-  PikPak: true,
-  Spotify: true,
-  Crypto: true,
-  EHentai: true,
-  AdBlock: true,
-
-  // 以下为非分流策略配置
-  生成地区自动选择组: true,
-  隐藏地区手动选择组: false,
-  生成倍率组: true,
-  分流组添加所有节点: false,
-  过滤高倍率节点: false,
-  过滤非地区节点: true,
-  屏蔽国外QUIC: false, // 安全加固：关闭额外第三方 cn_additional 规则源依赖
-  代理IPV4优先: false,
-  代理IPV6优先: false,
-  链式代理: false,
-};
-```
-
-| 选项 | 影响 |
-| --- | --- |
-| `隐藏地区手动选择组` | 将地区手动选择组标记为隐藏；它们仍可被其他组引用 |
-| `分流组添加所有节点` | 把具体节点直接加入各应用分流组，会显著增加列表长度 |
-| `过滤高倍率节点` | 在生成配置前排除匹配高倍率命名规则的节点 |
-| `过滤非地区节点` | 配合名称过滤规则清理公告/提示类节点，普通未知地区节点仍可能保留 |
-| `屏蔽国外QUIC` | 增加 UDP/443 拦截规则，并启用额外的 `cn_additional` Rule Provider |
-| `代理IPV4优先` / `代理IPV6优先` | 两者只开启一个时，为全部过滤后代理统一设置相应 `ip-version` |
-
-### 自定义节点与链式代理
-
-自定义节点入口：
-
-```javascript
-const customizeProxies = [];
-```
-
-加入合法 Mihomo 节点后，脚本会生成 `自建节点` 组；若名称与机场节点重复，会自动添加 `自建-` 前缀直到名称唯一。
-
-启用：
-
-```javascript
-链式代理: true
-```
-
-脚本会将自定义节点的 `dialer-proxy` 指向：
-
-```javascript
-const dialerProxyName = '链式中转';
-```
-
-同时生成 `链式落地` 和 `链式中转` 相关策略组。未添加任何自定义节点却开启链式代理时，脚本会抛出错误：
+### Bootstrap DNS
 
 ```text
-启用失败，请在脚本中添加自定义节点后尝试
+tls://223.5.5.5
+tls://223.6.6.6
 ```
 
-## Rule Provider
+### 国外 DoH
 
-规则以 Mihomo `.mrs` 为主，默认更新间隔为 `86400` 秒。基础规则始终参与配置；应用分流对应的 Rule Provider 只在该功能启用时加入最终配置。
+```text
+https://cloudflare-dns.com/dns-query
+https://dns.google/dns-query
+```
 
-主要来源：
+### 国内 / 直连 DoH
 
-- [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat)：基础地理、应用域名与 IP 规则。
-- [wwqgtxx/clash-rules](https://github.com/wwqgtxx/clash-rules)：直连与 Fake-IP 过滤规则。
-- [217heidai/adblockfilters](https://github.com/217heidai/adblockfilters)：AdBlock 规则。
-- [666OS/rules](https://github.com/666OS/rules)：Emby 规则。
-- [binaryu/emos-proxy-rule](https://github.com/binaryu/emos-proxy-rule)：EMOS / Emby 补充规则。
+```text
+https://dns.alidns.com/dns-query
+https://doh.pub/dns-query
+```
 
-`屏蔽国外QUIC` 默认关闭，所以额外的 `cn_additional` 规则源默认不会出现在最终配置中。第三方规则的内容与可用性由各自上游维护者决定。
+### DNS 分流
 
-## 注意事项
+国内规则：
 
-1. **本项目不是机场订阅。** 仍需使用包含有效节点的 Mihomo/Clash 配置作为输入。
-2. **脚本会重建配置。** DNS、hosts、TUN、代理组、规则及部分通用设置会被覆盖，而不是只追加几条规则。
-3. **默认端口是 `7890`。** 环境必须使用其他 `mixed-port` 时，请修改脚本。
-4. **默认禁止 LAN 访问。** 这是安全设计，不是故障。
-5. **TUN 默认开启。** 不使用虚拟网卡模式时，请调整 `tun.enable`。
-6. **地区识别依赖节点名称。** 特殊命名方式可通过修改 `regionDefinitions` 中的正则适配。
-7. **规则与图标依赖第三方。** 上游地址、格式或可用性变化可能影响配置更新。
+```text
+Direct
+Private
+China
+```
 
-## 常见问题
+优先使用国内 DoH。
 
-### 为什么 GLOBAL 同时包含代理组和具体节点？
+国外服务规则：
 
-这是脚本的设计目标。GLOBAL 汇总基础组、地区组、自建具体节点、全部机场节点和双栈直连，使全局模式既能使用自动选择，也能直接指定单个节点。
+```text
+Speedtest
+Twitter
+Telegram
+SocialMedia
+NewsMedia
+Games
+Crypto
+Emby
+Netflix
+YouTube
+Streaming
+Apple
+Google
+Microsoft
+Proxy
+```
 
-### 为什么 Crypto 可以选择直连？
+优先使用 Google / Cloudflare DoH。
 
-`Crypto` 的服务配置显式设置了 `direct: true`，可以根据网络环境在代理策略和 `直连` 之间切换。
+广告域名规则：
 
-### 为什么局域网中的其他设备无法连接电脑代理？
+```text
+Advertising
+AWAvenueAds
+```
 
-默认配置为：
+直接返回：
+
+```text
+rcode://success
+```
+
+---
+
+## TUN 与基础 Mihomo 参数
+
+脚本不会强制控制 Clash Verge Rev 界面中的 TUN 开关，但会在现有 `tun` 配置上补充：
 
 ```yaml
-allow-lan: false
-bind-address: 127.0.0.1
+stack: mixed
+dns-hijack:
+  - any:53
+  - tcp://any:53
+auto-route: true
+auto-redirect: true
+auto-detect-interface: true
 ```
 
-代理端口只对本机开放。如需 LAN 共享，请自行调整配置并做好访问控制。
+因此：
 
-### 为什么更新订阅后没有恢复脚本的默认选择？
+- 是否开启 TUN 仍由 Clash Verge Rev 界面控制；
+- 脚本不会强制修改 `tun.enable`；
+- 如果开启 TUN，上述参数会参与最终配置。
 
-Mihomo 配置启用了：
+其他基础设置包括：
+
+```yaml
+mode: rule
+ipv6: true
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: always
+keep-alive-interval: 15
+keep-alive-idle: 600
+```
+
+同时启用：
 
 ```yaml
 profile:
@@ -409,56 +424,306 @@ profile:
   store-fake-ip: true
 ```
 
-因此会尽量保留此前的策略选择与 Fake-IP 状态。清除持久化状态后，脚本的 `default-selected` 才可能重新生效。
+策略组选择因此可以被 Mihomo 持久化保存。
 
-### 更新订阅时报错怎么办？
+---
 
-优先检查 Clash Verge Rev 日志，常见原因包括：
+## Sniffer
 
-- 复制脚本时遗漏代码或产生 JavaScript 语法错误；
-- 输入订阅没有有效 `proxies`；
-- 开启链式代理但没有配置 `customizeProxies`；
-- 第三方 Rule Provider 暂时不可访问；
-- Mihomo / Clash Verge Rev 版本不支持脚本使用的配置项。
-
-## 项目结构
+启用 HTTP / TLS / QUIC 流量嗅探：
 
 ```text
-Clash-Verge-Custom-Script/
-├─ mihomoScript.js
-├─ README.md
-└─ docs/
-   └─ images/
-      ├─ home-overview.png
-      ├─ proxy-groups-core.png
-      ├─ proxy-groups-services.png
-      ├─ proxy-groups-regions.png
-      └─ rule-providers.png
+HTTP : 80, 8080-8880
+TLS  : 443, 8443
+QUIC : 443, 8443
 ```
 
-## 致谢
+HTTP 会开启：
 
-本项目基于以下开源项目和公共资源整理与定制：
+```yaml
+override-destination: true
+```
 
-- [AIsouler/MyClash](https://github.com/AIsouler/MyClash) — 原始 Mihomo 全量覆写脚本。
-- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo) — Mihomo 核心。
-- [clash-verge-rev/clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev) — Clash Verge Rev。
-- [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat) — Mihomo 规则数据。
-- [Koolson/Qure](https://github.com/Koolson/Qure) 及脚本中引用的其他图标项目 — 策略组图标。
-- 脚本中引用的其他规则维护项目。
+跳过：
 
-感谢所有上游开发者与规则维护者。
+```text
+Mijia Cloud
++.push.apple.com
+```
 
-## License / 许可说明
+---
 
-本仓库包含基于上游项目修改的代码，同时依赖多个第三方规则与图标资源。各部分版权和许可证归各自原作者所有。
+## 分流规则
 
-在正式添加 `LICENSE` 文件之前，请先确认原始项目及相关代码的许可证要求，并选择与上游许可兼容的开源协议。
+脚本当前重建 **44 条主规则**，总体顺序为：
 
-## Disclaimer / 免责声明
+```text
+广告 / Tracking
+        ↓
+阻止 UDP 443 / QUIC
+        ↓
+WiFi Calling / 定位
+        ↓
+Private / Direct / Download
+        ↓
+AI / Speedtest
+        ↓
+Telegram / Twitter / Social Media
+        ↓
+游戏 / Crypto
+        ↓
+Emby / Netflix / YouTube / Streaming
+        ↓
+Apple / Google / GitHub / Microsoft
+        ↓
+Proxy / China
+        ↓
+IP Rule Set
+        ↓
+MATCH → 兜底流量
+```
 
-本项目仅用于 Mihomo / Clash Verge Rev 配置管理、规则组织和技术研究。本项目不提供代理服务器、不出售网络服务、不提供机场订阅，也不保证第三方规则源永久可用。
+其中包含：
 
-使用者应自行确保网络服务、订阅来源和使用方式符合所在地法律法规及相关服务条款，并自行承担因修改或使用配置产生的风险。
+```yaml
+AND,((DST-PORT,443),(NETWORK,UDP)),REJECT
+```
 
-如果项目对你有帮助，欢迎点亮 ⭐ Star。Issues 和 Pull Requests 可用于反馈 Bug、节点地区识别问题、规则缺失、兼容性问题和功能改进建议。
+即默认拒绝 UDP 443，以避免 QUIC 绕过预期的 TCP 代理路径。
+
+---
+
+## Rule Provider
+
+当前脚本定义 **42 个 Rule Provider**。
+
+主要来源包括：
+
+### 666OS/rules
+
+用于大多数 Domain / IP 规则，包括：
+
+```text
+Tracking
+Advertising
+Direct
+Private
+AI
+Telegram
+Twitter
+SocialMedia
+NewsMedia
+Games
+Crypto
+Netflix
+YouTube
+Emby
+Streaming
+Apple
+Google
+Microsoft
+Proxy
+China
+...
+```
+
+Domain 与 IP 规则主要使用 Mihomo `mrs` 格式。
+
+### HenryChiao/wificalling
+
+用于：
+
+```text
+UKwifi
+```
+
+### AWAvenue Ads Rule
+
+用于额外广告域名拦截：
+
+```text
+AWAvenueAds
+```
+
+### Kelee GitHub Rule
+
+用于独立的：
+
+```text
+Github
+```
+
+分流规则。
+
+---
+
+## 不会覆盖的配置
+
+为了避免与 Clash Verge Rev 自身管理逻辑冲突，脚本不会主动写死以下配置：
+
+```text
+mixed-port
+port
+socks-port
+redir-port
+external-controller
+secret
+authentication
+listeners
+```
+
+这类参数继续交给 Clash Verge Rev 管理。
+
+同时脚本会：
+
+- **保留原订阅的 `proxies`**；
+- **保留原订阅的 `proxy-providers`**；
+- 合并现有 `hosts`；
+- 合并现有 `tun` 的其他字段；
+- 合并现有 `experimental` 与 `profile` 中未被脚本指定的字段。
+
+---
+
+## 多机场使用方式
+
+本项目最适合这种场景：
+
+```text
+Clash Verge Rev
+│
+├── 机场 A
+├── 机场 B
+├── 机场 C
+├── 机场 D
+│
+└── 全局扩展脚本
+    └── mihomoScript.js
+```
+
+切换到不同机场时：
+
+```text
+机场节点发生变化
+        ↓
+脚本逻辑保持不变
+        ↓
+代理组名称保持一致
+        ↓
+规则 / DNS / 分流保持一致
+```
+
+因此无需维护：
+
+```text
+机场 A 专用脚本
+机场 B 专用脚本
+机场 C 专用脚本
+```
+
+只维护这一份全局脚本即可。
+
+---
+
+## 常见问题
+
+### 1. 导入机场后为什么没有生成代理组？
+
+脚本要求当前配置至少存在以下之一：
+
+```text
+proxies
+proxy-providers
+```
+
+如果机场返回的并不是 Mihomo / Clash 可识别配置，需要先通过机场自身提供的 Clash / Mihomo 订阅格式导入。
+
+### 2. 为什么某个地区策略没有节点？
+
+地区策略依赖节点名称匹配。
+
+例如机场把香港节点命名为完全不包含 `香港 / 港 / HK / HKG` 的自定义名称，就可能无法识别。
+
+可自行修改脚本中的：
+
+```javascript
+FilterHK
+FilterSG
+FilterJP
+FilterKR
+FilterUS
+FilterTW
+FilterEU
+```
+
+### 3. 为什么机场自己的代理组消失了？
+
+这是预期行为。
+
+脚本会保留机场节点，但重建：
+
+```text
+proxy-groups
+rules
+rule-providers
+dns
+```
+
+目的就是让不同机场统一使用同一套代理组和分流逻辑。
+
+### 4. 为什么 `全球手动` 在最上面？
+
+这是当前脚本的设计。
+
+`全球手动` 被放在 `proxy-groups` 第一项，方便切换机场后直接选择具体节点。
+
+### 5. TUN 会被脚本自动打开吗？
+
+不会。
+
+脚本只补充 TUN 参数，不写入：
+
+```yaml
+enable: true
+```
+
+TUN 是否启用由 Clash Verge Rev 的界面设置决定。
+
+### 6. 为什么无法使用 HTTP/3 / QUIC？
+
+脚本明确包含：
+
+```yaml
+AND,((DST-PORT,443),(NETWORK,UDP)),REJECT
+```
+
+因此 UDP 443 会被拒绝。如果你需要 QUIC / HTTP/3，需要自行调整该规则。
+
+---
+
+## 配置来源与致谢
+
+当前脚本的代理组和分流设计参考 / 使用了以下项目或资源：
+
+- [HenryChiao/MIHOMO_YAMLS](https://github.com/HenryChiao/MIHOMO_YAMLS)
+- [666OS/rules](https://github.com/666OS/rules)
+- [HenryChiao/wificalling](https://github.com/HenryChiao/wificalling)
+- [TG-Twilight/AWAvenue-Ads-Rule](https://github.com/TG-Twilight/AWAvenue-Ads-Rule)
+- [Koolson/Qure](https://github.com/Koolson/Qure) — 策略组图标
+- [Orz-3/mini](https://github.com/Orz-3/mini) — 部分图标
+- `rule.kelee.one` — GitHub 分流规则
+
+第三方规则、图标和数据由对应项目维护，本仓库只负责组合与配置逻辑。
+
+---
+
+## 更新
+
+脚本更新后，只需要重新复制最新的 [`mihomoScript.js`](./mihomoScript.js) 到 Clash Verge Rev 的全局扩展脚本中并保存即可。
+
+Raw：
+
+```text
+https://raw.githubusercontent.com/hh1848/Clash-Verge-Custom-Script/main/mihomoScript.js
+```
+
+如果机场订阅本身更新，只需要在 Clash Verge Rev 中正常刷新该机场，无需修改本脚本。
